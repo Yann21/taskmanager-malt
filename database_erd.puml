@@ -1,0 +1,36 @@
+@startuml
+entity "tasks" {
+  + id : INTEGER (PK)
+  --
+  name : VARCHAR(255)
+  description : TEXT
+}
+
+entity "lists" {
+  + id : INTEGER (PK)
+  --
+  name : VARCHAR(255)
+  type : VARCHAR(255)  -- inbox, later, backlog, todo, done
+}
+
+entity "kanbans" {
+  + id : INTEGER (PK)
+  --
+  name : VARCHAR(255)
+  type : VARCHAR(255)  -- project, context
+  backlog_list_id : INT (FK)
+  todo_list_id : INT (FK)
+  done_list_id : INT (FK)
+}
+
+entity "task_list_association" {
+  + task_id : INT (FK)
+  + list_id : INT (FK)
+}
+
+tasks ||--o{ task_list_association
+lists ||--o{ task_list_association
+task_list_association }o--|| kanbans : backlog_list_id
+task_list_association }o--|| kanbans : todo_list_id
+task_list_association }o--|| kanbans : done_list_id
+@enduml
